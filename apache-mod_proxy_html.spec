@@ -37,16 +37,15 @@ mod_proxy_html to dodatkowy modu³ proxy do przepisywania
 %build
 cp %{SOURCE0} .
 %{apxs} \
-	-c -o mod_%{mod_name}.so \
+	-c -o mod_%{mod_name}.la \
 	$(%{_bindir}/xml2-config --cflags --libs) \
-	-Wl,-shared \
 	mod_%{mod_name}.c
 
 %install
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT{%{apache_moddir},/etc/httpd/httpd.conf}
 
-install mod_%{mod_name}.so $RPM_BUILD_ROOT%{apache_moddir}
+install .libs/mod_%{mod_name}.so $RPM_BUILD_ROOT%{apache_moddir}
 cat <<EOF > $RPM_BUILD_ROOT/etc/httpd/httpd.conf/35_mod_%{mod_name}.conf
 LoadModule proxy_html_module    modules/mod_proxy_html.so
 
