@@ -49,7 +49,7 @@ install -d $RPM_BUILD_ROOT{%{_pkglibdir},%{_sysconfdir}/httpd.conf}
 
 install .libs/mod_%{mod_name}.so $RPM_BUILD_ROOT%{_pkglibdir}
 cat <<EOF > $RPM_BUILD_ROOT%{_sysconfdir}/httpd.conf/35_mod_%{mod_name}.conf
-LoadModule proxy_html_module    modules/mod_proxy_html.so
+LoadModule proxy_html_module	modules/mod_proxy_html.so
 
 # You will find configuration instructions here:
 # http://apache.webthing.com/mod_proxy_html/config.html
