@@ -30,7 +30,8 @@ mod_proxy_html is additional proxy module for rewriting HTML links
 so that they don't break in a reverse proxy.
 
 %description -l pl
-mod_proxy_html to dodatkowy modu³ proxy do przepisywania
+mod_proxy_html to dodatkowy modu³ proxy do przepisywania odno¶ników
+HTML w ten sposób, by nie by³y uszkadzane przez odwrotne proxy.
 
 %prep
 %setup -q -c -T
