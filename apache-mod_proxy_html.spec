@@ -33,9 +33,9 @@ so that they don't break in a reverse proxy.
 mod_proxy_html to dodatkowy modu³ proxy do przepisywania
 %prep
 %setup -q -c -T
+cp %{SOURCE0} .
 
 %build
-cp %{SOURCE0} .
 %{apxs} \
 	-c -o mod_%{mod_name}.la \
 	$(%{_bindir}/xml2-config --cflags --libs) \
