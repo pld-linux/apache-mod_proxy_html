@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html lang="en"><head>
+<title>mod_proxy_html</title>
+<style type="text/css">
+@import url(/index.css) ;
+</style>
+</head><body>
+<div id="apache">
+<h1><a href="./">mod_proxy_html</a></h1>
+<div class="notice">
+<h2>Notice</h2>
+<p>Users of mod_proxy_html should upgrade to <a href="http://xmlsoft.org/">libxml2 version 2.5.10</a> or later.
+This fixes bugs in earlier versions that
+can in some cases have a severe impact on performance.</p>
+</div>
+
+<p>mod_proxy_html is based on one specific capability of
+<a href="../mod_accessibility/">mod_accessibility</a>, namely that of
+rewriting HTML links so that they don't break in a reverse proxy.
+The need for it was identified in <a href="http://groups.google.com/groups?dq=&amp;hl=en&amp;lr=&amp;ie=UTF-8&amp;th=f71d3dfe32c6387f&amp;seekm=slrnbhi6p4.4pb.wizball%40babar.foo.com&amp;frame=off">a Usenet thread</a>.</p>
+<p>The problem arises when links such as <code>&lt;a
+href="http://private-address.example.com/"></code> are used in
+a proxied page, when the server <code>private-address.example.com</code>
+needs to be proxied (for example, because its address is not valid
+beyond a private network).  <code>mod_proxy_html</code> rewrites
+such URLs into the proxy's own namespace.</p>
+<p>The key directive required for this is <tt>ProxyHTMLURLMap</tt>.
+This is functionally identical to <tt>AccessibilityURLMap</tt>,
+which is documented in the
+<a href="../mod_accessibility/">mod_accessibility</a> pages.</p>
+<h3>Example: how to use it</h3>
+<p>In this case, the proxy is serving pages from two internal servers
+<tt>internal.example.org</tt> and <tt>other.example.org</tt>
+neither of which is accessible directly from the outside world.
+The directives for this are:</p>
+<dl>
+<dt><code>ProxyPass	/internal.example.org/	http://internal.example.org/</code>
+<br/><code>ProxyPass	/other.example.org/	http://other.example.org/</code>
+<dd>Map the URLs to the proxy's address space, as documented in Apache's
+<tt>mod_proxy</tt> documentation.</dd>
+<dt><code>ProxyHTMLURLMap	http://internal.example.org	/internal.example.org</code>
+<br/><code>ProxyHTMLURLMap	http://other.example.org	/other.example.org</code></dt>
+<dd>This causes mod_proxy_html to rewrite all absolute URLs for
+the internal domains to the proxy's address space.  These directives
+<em>could</em> go inside the Location directives below, but putting them
+at top level saves repeating them at different Locations.
+<strong>NOTE:</strong> because the pattern matching used is starts-with,
+it is best to omit any trailing slash from the above URL.
+</dd>
+<dt><code>&lt;Location	/internal.example.org/></code></dt>
+<dd>Specifies directives that will apply (only) under 
+<tt>/internal.example.org</tt></dd>
+<dt><code>ProxyPassReverse	/</code></dt>
+<dd>Rewrite URLs in HTTP Headers (mod_proxy)</dd>
+<dt><code>SetOutputFilter	proxy-html</code></dt>
+<dd>Inserts (activates) the proxy-html output filter</dd>
+<dt><code>ProxyHTMLURLMap	/	/internal.example.org/</code></dt>
+<dd>Rewrites URLs starting with a <tt>/</tt> into the proxy's address space.</dd>
+<dt><code>ProxyHTMLURLMap	/internal.example.org/	/internal.example.org/</code></dt>
+<dd>This is necessary to prevent the previous rule rewriting relative URLs
+already in the Proxy's address space.  It must come after the previous rule.</dd>
+<dt><code>&lt;/Location></code></dt>
+<dd>Ends directives for <tt>/internal.example.org</tt>.  Equivalent directives
+are of course also required for <tt>/other.example.org</tt>, but are
+omitted (for brevity) from this page.</dd>
+</dl>
+<h2>Availability</h2>
+<p><a href="mod_proxy_html.c">mod_proxy_html.c source code</a> is available
+under the <a href="http://www.fsf.org/licenses/gpl.html">GNU
+General Public License (GPL)</a>.  As with other opensource modules,
+we can consider alternative licenses by request.</p>
+</div>
+<div id="navbar"><a class="internal" href="./" title="Up">Up</a>
+*
+<a class="internal" href="/" title="WebThing Apache Centre">Home</a>
+*
+<a class="internal" href="/contact.html" title="Contact WebThing">Contact</a>
+*
+<a class="external" href="http://www.webthing.com/" title="WebThing Ltd">WebÞing</a>
+*
+<a class="external" href="http://www.apache.org/" title="Apache Software Foundation">Apache</a></div></body></html>
