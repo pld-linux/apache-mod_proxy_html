@@ -1,7 +1,8 @@
 %define		mod_name	proxy_html
 %define 	apxs		/usr/sbin/apxs
 
-Summary:	An embedded Python interpreter for the Apache Web server
+Summary:	mod_proxy_html - additional proxy module for rewriting HTML links
+Summary(pl):	mod_proxy_html - dodatkowy modu³ proxy do przepisywania odno¶ników HTML
 Name:		apache-mod_%{mod_name}
 Version:	0.20031204
 Release:	1
@@ -16,10 +17,11 @@ BuildRequires:	apache-devel >= 2.0.44
 BuildRequires:	apr-devel >= 1:0.9.4-1
 BuildRequires:	autoconf
 BuildRequires:	automake
-BuildRequires:	libxml2-devel
+BuildRequires:	libxml2-devel >= 2.5.10
 Requires(post,preun):	%{apxs}
 Requires:	apache >= 2.0.44
 Requires:	apache-mod_proxy >= 2.0.44
+Requires:	libxml2 >= 2.5.10
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		apache_moddir	%(%{apxs} -q LIBEXECDIR)
@@ -28,11 +30,16 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 mod_proxy_html is additional proxy module for rewriting HTML links
 so that they don't break in a reverse proxy.
 
+%description -l pl
+mod_proxy_html to dodatkowy modu³ proxy do przepisywania
 %prep
 %setup -q -c -T
 
 %build
-%{apxs} $(%{_bindir}/xml2-config --cflags --libs) $((%{_bindir}/apr-config --cflags --link-ld; %{_bindir}/apu-config --link-ld) | sed -e 's#-pthread#-lpthread#g') -c %{SOURCE0} -o mod_%{mod_name}.so
+%{apxs} \
+	$(%{_bindir}/xml2-config --cflags --libs) \
+	$((%{_bindir}/apr-config --cflags --link-ld; %{_bindir}/apu-config --link-ld) | sed -e 's#-pthread#-lpthread#g') \
+	-c %{SOURCE0} -o mod_%{mod_name}.so
 
 %install
 rm -rf $RPM_BUILD_ROOT
