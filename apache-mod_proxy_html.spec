@@ -4,13 +4,12 @@
 Summary:	mod_proxy_html - additional proxy module for rewriting HTML links
 Summary(pl):	mod_proxy_html - dodatkowy modu³ proxy do przepisywania odno¶ników HTML
 Name:		apache-mod_%{mod_name}
-Version:	0.20031204
+Version:	2.3
 Release:	1
 License:	GPL
 Group:		Networking/Daemons
-# http://apache.webthing.com/mod_proxy_html/mod_proxy_html.c
-Source0:	mod_proxy_html.c
-Source1:	mod_proxy_html.html
+Source0:	http://apache.webthing.com/mod_proxy_html/mod_proxy_html.c
+# Source0-md5:	a7a2bb9c24ee548ea9b16c35e7cab76a
 URL:		http://apache.webthing.com/mod_proxy_html/
 BuildRequires:	%{apxs}
 BuildRequires:	apache-devel >= 2.0.44
@@ -36,16 +35,24 @@ mod_proxy_html to dodatkowy modu³ proxy do przepisywania
 %setup -q -c -T
 
 %build
+cp %{SOURCE0} .
 %{apxs} \
+	-c -o mod_%{mod_name}.so \
 	$(%{_bindir}/xml2-config --cflags --libs) \
-	$((%{_bindir}/apr-config --cflags --link-ld; %{_bindir}/apu-config --link-ld) | sed -e 's#-pthread#-lpthread#g') \
-	-c %{SOURCE0} -o mod_%{mod_name}.so
+	-Wl,-shared \
+	mod_%{mod_name}.c
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT%{apache_moddir}
+install -d $RPM_BUILD_ROOT{%{apache_moddir},/etc/httpd/httpd.conf}
 
 install mod_%{mod_name}.so $RPM_BUILD_ROOT%{apache_moddir}
+cat <<EOF > $RPM_BUILD_ROOT/etc/httpd/httpd.conf/35_mod_%{mod_name}.conf
+LoadModule proxy_html_module    modules/mod_proxy_html.so
+
+# You will find configuration instructions here:
+# http://apache.webthing.com/mod_proxy_html/config.html
+EOF
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -64,5 +71,5 @@ fi
 
 %files
 %defattr(644,root,root,755)
-%doc %{SOURCE1}
+%config(noreplace) %verify(not size mtime md5) /etc/httpd/httpd.conf/*
 %attr(755,root,root) %{apache_moddir}/*
