@@ -23,7 +23,8 @@ Requires:	apache-mod_proxy >= 2.0.44
 Requires:	libxml2 >= 2.5.10
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
-%define		apache_moddir	%(%{apxs} -q LIBEXECDIR)
+%define		_sysconfdir	%(%{apxs} -q SYSCONFDIR)
+%define		_pkglibdir	%(%{apxs} -q LIBEXECDIR)
 
 %description
 mod_proxy_html is additional proxy module for rewriting HTML links
@@ -43,10 +44,10 @@ cp %{SOURCE0} .
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{%{apache_moddir},/etc/httpd/httpd.conf}
+install -d $RPM_BUILD_ROOT{%{_pkglibdir},%{_sysconfdir}/httpd.conf}
 
-install .libs/mod_%{mod_name}.so $RPM_BUILD_ROOT%{apache_moddir}
-cat <<EOF > $RPM_BUILD_ROOT/etc/httpd/httpd.conf/35_mod_%{mod_name}.conf
+install .libs/mod_%{mod_name}.so $RPM_BUILD_ROOT%{_pkglibdir}
+cat <<EOF > $RPM_BUILD_ROOT%{_sysconfdir}/httpd.conf/35_mod_%{mod_name}.conf
 LoadModule proxy_html_module    modules/mod_proxy_html.so
 
 # You will find configuration instructions here:
@@ -70,5 +71,5 @@ fi
 
 %files
 %defattr(644,root,root,755)
-%config(noreplace) %verify(not size mtime md5) /etc/httpd/httpd.conf/*
-%attr(755,root,root) %{apache_moddir}/*
+%config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/httpd.conf/*
+%attr(755,root,root) %{_pkglibdir}/*
