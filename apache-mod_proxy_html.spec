@@ -1,6 +1,5 @@
 %define		mod_name	proxy_html
 %define 	apxs		/usr/sbin/apxs
-
 Summary:	mod_proxy_html - additional proxy module for rewriting HTML links
 Summary(pl):	mod_proxy_html - dodatkowy modu³ proxy do przepisywania odno¶ników HTML
 Name:		apache-mod_%{mod_name}
@@ -32,6 +31,7 @@ so that they don't break in a reverse proxy.
 
 %description -l pl
 mod_proxy_html to dodatkowy modu³ proxy do przepisywania
+
 %prep
 %setup -q -c -T
 cp %{SOURCE0} .
