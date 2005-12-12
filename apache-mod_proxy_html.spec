@@ -26,8 +26,8 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 %define		_pkglibdir	%(%{apxs} -q LIBEXECDIR)
 
 %description
-mod_proxy_html is additional proxy module for rewriting HTML links
-so that they don't break in a reverse proxy.
+mod_proxy_html is additional proxy module for rewriting HTML links so
+that they don't break in a reverse proxy.
 
 %description -l pl
 mod_proxy_html to dodatkowy modu³ proxy do przepisywania odno¶ników
@@ -72,5 +72,5 @@ fi
 
 %files
 %defattr(644,root,root,755)
-%config(noreplace) %verify(not size mtime md5) %{_sysconfdir}/httpd.conf/*
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/httpd.conf/*
 %attr(755,root,root) %{_pkglibdir}/*
