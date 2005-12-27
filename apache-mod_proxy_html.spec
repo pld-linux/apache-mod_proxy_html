@@ -1,3 +1,5 @@
+# TODO
+# - update to apache 2.2 (build fails)
 %define		mod_name	proxy_html
 %define 	apxs		/usr/sbin/apxs
 Summary:	mod_proxy_html - additional proxy module for rewriting HTML links
@@ -16,14 +18,13 @@ BuildRequires:	apr-devel >= 1:0.9.4-1
 BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	libxml2-devel >= 2.5.10
-Requires(post,preun):	%{apxs}
-Requires:	apache >= 2.0.44
+Requires:	apache(modules-api) = %apache_modules_api
 Requires:	apache-mod_proxy >= 2.0.44
 Requires:	libxml2 >= 2.5.10
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
-%define		_sysconfdir	%(%{apxs} -q SYSCONFDIR)
-%define		_pkglibdir	%(%{apxs} -q LIBEXECDIR)
+%define		_pkglibdir	%(%{apxs} -q LIBEXECDIR 2>/dev/null)
+%define		_sysconfdir	%(%{apxs} -q SYSCONFDIR 2>/dev/null)
 
 %description
 mod_proxy_html is additional proxy module for rewriting HTML links so
@@ -72,5 +73,5 @@ fi
 
 %files
 %defattr(644,root,root,755)
-%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/httpd.conf/*
-%attr(755,root,root) %{_pkglibdir}/*
+%attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/httpd.conf/*_mod_%{mod_name}.conf
+%attr(755,root,root) %{_pkglibdir}/*.so
