@@ -20,7 +20,7 @@ BuildRequires:	automake
 BuildRequires:	libxml2-devel >= 2.5.10
 BuildRequires:	rpmbuild(macros) >= 1.268
 Requires:	apache(modules-api) = %apache_modules_api
-Requires:	apache-mod_proxy >= 2.0.44
+Requires:	apache-mod_proxy
 Requires:	libxml2 >= 2.5.10
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
