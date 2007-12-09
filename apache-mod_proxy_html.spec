@@ -12,7 +12,7 @@ Group:		Networking/Daemons
 Source0:	http://apache.webthing.com/mod_proxy_html/mod_proxy_html.c
 # Source0-md5:	b1211dff5343d75ac376ef836557f11f
 URL:		http://apache.webthing.com/mod_proxy_html/
-BuildRequires:	apache-apxs >= 2.0.44
+BuildRequires:	%{apxs}
 BuildRequires:	apache-devel >= 2.0.44
 BuildRequires:	apr-devel >= 1:0.9.4-1
 BuildRequires:	autoconf
