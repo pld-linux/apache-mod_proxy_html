@@ -8,7 +8,7 @@ Name:		apache-mod_%{mod_name}
 Version:	2.3
 Release:	1
 License:	GPL
-Group:		Networking/Daemons
+Group:		Networking/Daemons/HTTP
 Source0:	http://apache.webthing.com/mod_proxy_html/mod_proxy_html.c
 # Source0-md5:	b1211dff5343d75ac376ef836557f11f
 URL:		http://apache.webthing.com/mod_proxy_html/
