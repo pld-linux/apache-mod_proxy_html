@@ -5,12 +5,12 @@
 Summary:	mod_proxy_html - additional proxy module for rewriting HTML links
 Summary(pl.UTF-8):	mod_proxy_html - dodatkowy moduł proxy do przepisywania odnośników HTML
 Name:		apache-mod_%{mod_name}
-Version:	2.3
+Version:	3.0.1
 Release:	1
 License:	GPL
 Group:		Networking/Daemons/HTTP
 Source0:	http://apache.webthing.com/mod_proxy_html/mod_proxy_html.c
-# Source0-md5:	b1211dff5343d75ac376ef836557f11f
+# Source0-md5:	6d38fbcd58e6e5cac246da3d1fcd22f4
 URL:		http://apache.webthing.com/mod_proxy_html/
 BuildRequires:	%{apxs}
 BuildRequires:	apache-devel >= 2.0.44
