@@ -6,7 +6,7 @@ Summary:	mod_proxy_html - additional proxy module for rewriting HTML links
 Summary(pl.UTF-8):	mod_proxy_html - dodatkowy moduł proxy do przepisywania odnośników HTML
 Name:		apache-mod_%{mod_name}
 Version:	3.0.1
-Release:	2
+Release:	3
 License:	GPL
 Group:		Networking/Daemons/HTTP
 Source0:	http://apache.webthing.com/mod_proxy_html/mod_proxy_html.c
@@ -25,7 +25,7 @@ Requires:	libxml2 >= 2.5.10
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		_pkglibdir	%(%{apxs} -q LIBEXECDIR 2>/dev/null)
-%define		_sysconfdir	%(%{apxs} -q SYSCONFDIR 2>/dev/null)
+%define		_sysconfdir	%(%{apxs} -q SYSCONFDIR 2>/dev/null)/conf.d
 
 %description
 mod_proxy_html is additional proxy module for rewriting HTML links so
@@ -47,10 +47,10 @@ cp %{SOURCE0} .
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{%{_pkglibdir},%{_sysconfdir}/conf.d}
+install -d $RPM_BUILD_ROOT{%{_pkglibdir},%{_sysconfdir}}
 
 install .libs/mod_%{mod_name}.so $RPM_BUILD_ROOT%{_pkglibdir}
-cat <<EOF > $RPM_BUILD_ROOT%{_sysconfdir}/conf.d/35_mod_%{mod_name}.conf
+cat <<EOF > $RPM_BUILD_ROOT%{_sysconfdir}/35_mod_%{mod_name}.conf
 LoadModule proxy_html_module	modules/mod_proxy_html.so
 
 # You will find configuration instructions here:
@@ -70,5 +70,5 @@ fi
 
 %files
 %defattr(644,root,root,755)
-%attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/conf.d/*_mod_%{mod_name}.conf
+%attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/*_mod_%{mod_name}.conf
 %attr(755,root,root) %{_pkglibdir}/*.so
