@@ -1,5 +1,3 @@
-# TODO
-# - update to apache 2.2 (build fails)
 %define		mod_name	proxy_html
 %define 	apxs		/usr/sbin/apxs
 Summary:	mod_proxy_html - additional proxy module for rewriting HTML links
