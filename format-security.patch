@@ -1,0 +1,11 @@
+--- apache-mod_proxy_html-3.0.1/mod_proxy_html.c~	2013-05-05 21:50:26.368139682 +0200
++++ apache-mod_proxy_html-3.0.1/mod_proxy_html.c	2013-05-05 21:50:59.228139444 +0200
+@@ -782,7 +782,7 @@
+     proxy_html_conf* cfg
+         = ap_get_module_config(f->r->per_dir_config, &proxy_html_module);
+     if ( cfg->verbose ) {
+-      ap_log_rerror(APLOG_MARK, APLOG_INFO, 0, f->r, errmsg) ;
++      ap_log_rerror(APLOG_MARK, APLOG_INFO, 0, f->r, "%s", errmsg) ;
+     }
+ #endif
+     ap_remove_output_filter(f) ;

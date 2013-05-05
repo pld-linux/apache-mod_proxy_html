@@ -1,14 +1,15 @@
 %define		mod_name	proxy_html
-%define 	apxs		/usr/sbin/apxs
+%define		apxs		/usr/sbin/apxs
 Summary:	mod_proxy_html - additional proxy module for rewriting HTML links
 Summary(pl.UTF-8):	mod_proxy_html - dodatkowy moduł proxy do przepisywania odnośników HTML
 Name:		apache-mod_%{mod_name}
 Version:	3.0.1
-Release:	3
+Release:	4
 License:	GPL
 Group:		Networking/Daemons/HTTP
 Source0:	http://apache.webthing.com/mod_proxy_html/mod_proxy_html.c
 # Source0-md5:	6d38fbcd58e6e5cac246da3d1fcd22f4
+Patch0:		format-security.patch
 URL:		http://apache.webthing.com/mod_proxy_html/
 BuildRequires:	%{apxs}
 BuildRequires:	apache-devel >= 2.0.44
@@ -36,6 +37,7 @@ HTML w ten sposób, by nie były uszkadzane przez odwrotne proxy.
 %prep
 %setup -q -c -T
 cp %{SOURCE0} .
+%patch0 -p1
 
 %build
 %{apxs} \
